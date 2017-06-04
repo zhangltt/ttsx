@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from models import *
+from django.core.paginator import Paginator,Page
 # Create your views here.
 def index(request):
     t1_click= GoodsInfo.objects.filter(gtype_id=1).order_by('-gclick')[0:3]
@@ -39,8 +40,39 @@ def index2(request,tid):
     context={'click_list':click_list,'new_list':new_list}
     return JsonResponse(context)
 
-def list(request):
-    pass
+
+def list(request,tid,index,sort):
+    # 获取tid获取分类
+    print sort
+    typeinfo = TypeInfo.objects.get(pk=int(tid))
+    #print typeinfo
+    # 获取最新推荐的两件商品,通过id降序
+    news = typeinfo.goodsinfo_set.order_by('-id')[0:2]
+   # print news[0].gtitle
+    # 根据默认(新品) 1,价格 2,人气排序 3
+
+    if sort == '1':
+        goods_list = typeinfo.goodsinfo_set.order_by('-id')
+        #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-id')
+    elif sort == '2':
+        goods_list = typeinfo.goodsinfo_set.order_by('-gprice')
+        #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gprice')
+    elif sort == '3':
+        goods_list = typeinfo.goodsinfo_set.order_by('-gclick')
+        #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
+
+    # 创建Paginator对象,每页显示10个
+    paginator = Paginator(goods_list, 10)
+    # 获取page对象,显示第index页的数据
+    pages = paginator.page(int(index))
+    print goods_list[0].gtitle
+    #print good1_list[0].gtitle
+    context={'pages':pages,'new':news,
+             'sort':sort,
+             'paginator':paginator,
+             }
+    #return JsonResponse(context)
+    return render(request,'df_goods/list.html',context)
 
 def detail(request):
     pass
