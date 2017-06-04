@@ -70,6 +70,7 @@ def list(request,tid,index,sort):
     context={'pages':pages,'new':news,
              'sort':sort,
              'paginator':paginator,
+             'typeinfo':typeinfo,
              }
     #return JsonResponse(context)
     return render(request,'df_goods/list.html',context)
