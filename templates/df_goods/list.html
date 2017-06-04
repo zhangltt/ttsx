@@ -38,7 +38,7 @@
 				<ul>
 					{%for new in new%}
 					<li>
-						<a href="#"><img src="/static/{{new.gpic}}"></a>
+						<a href="#"><img src="/static/{{new.gpic}}/"></a>
 						<h4><a href="#">{{new.gtitle}}</a></h4>
 						<div class="prize">￥{{new.gprice}}</div>
 					</li>
@@ -70,7 +70,7 @@
 
 				{%for good in pages%}
 				<li>
-					<a href="detail.html"><img src="/static/{{good.gpic}}"></a>
+					<a href="/detail{{good.id}}"><img src="/static/{{good.gpic}}"></a>
 					<h4><a href="detail.html">{{good.gtitle}}</a></h4>
 					<div class="operate">
 						<span class="prize">￥{{good.gprice}}</span>

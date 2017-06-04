@@ -1,5 +1,45 @@
 {%extends 'base.html'%}
 
+{%block head%}
+
+<script type="text/javascript" >
+
+	function calcTotal(){
+	    // 数量
+	   var count =parseInt($('.num_show').val())
+		// 单价
+		var price = parseFloat($('.show_pirze>em').text())
+	    // 计算总价并插入
+		$('.total>em').text((count*price).toFixed(2))
+
+	}
+
+$(function(){
+    $('.num_show').blur(function(){
+
+		calcTotal()
+
+	})
+	$('.add ').click(function(){
+	    $('.num_show').val(parseInt($('.num_show').val())+1)
+	    calcTotal()
+	})
+	$('.minus').click(function(){
+	    count = parseInt($('.num_show').val())-1
+		if(count<=1)
+		{$('.num_show').val(1)}
+		else
+		{$('.num_show').val(count)}
+		calcTotal()
+	})
+
+})
+
+</script>
+
+
+{%endblock head%}
+
 {%block content%}
 <div class="navbar_con">
 		<div class="navbar clearfix">
@@ -34,28 +74,41 @@
 	</div>
 
 	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="/static/images/goods_detail.jpg"></div>
+		<div class="goods_detail_pic fl"><img src="/static/{{goodinfo.gpic}}"></div>
 
 		<div class="goods_detail_list fr">
 			<h3>{{goodinfo.gtitle}}</h3>
 			<p>{{goodinfo.gjianjie}}</p>
+
+
 			<div class="prize_bar">
 				<span class="show_pirze">¥<em>{{goodinfo.gprice}}</em></span>
 				<span class="show_unit">单  位：{{goodinfo.gunit}}</span>
 			</div>
+
 			<div class="goods_num clearfix">
 				<div class="num_name fl">数 量：</div>
+
+
 				<div class="num_add fl">
 					<input type="text" class="num_show fl" value="1">
 					<a href="javascript:;" class="add fr">+</a>
 					<a href="javascript:;" class="minus fr">-</a>
 				</div>
 			</div>
-			<div class="total">总价：<em>16.80元</em></div>
+
+
+
+
+			<div class="total">总价：<em>{{goodinfo.gprice}}元</em></div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
 			</div>
+
+
+
+
 		</div>
 	</div>
 
@@ -64,16 +117,16 @@
 			<div class="new_goods">
 				<h3>新品推荐</h3>
 				<ul>
+					{%for new in news%}
 					<li>
-						<a href="#"><img src="/static/images/goods/goods001.jpg"></a>
-						<h4><a href="#">进口柠檬</a></h4>
-						<div class="prize">￥3.90</div>
+						<a href="/detail{{new.id}}/"><img src="/static/{{new.gpic}}"></a>
+						<h4><a href="/detail{{new.id}}/">{{new.gtitle}}</a></h4>
+						<div class="prize">￥{{new.gprice}}</div>
 					</li>
-					<li>
-						<a href="#"><img src="/static/images/goods/goods002.jpg"></a>
-						<h4><a href="#">玫瑰香葡萄</a></h4>
-						<div class="prize">￥16.80</div>
-					</li>
+					{%endfor%}
+
+
+
 				</ul>
 			</div>
 		</div>
@@ -85,10 +138,13 @@
 			</ul>
 
 			<div class="tab_content">
-				<dl>
-					<dt>商品详情：</dt>
-					<dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>
-				</dl>
+				{{goodinfo.gcontent|safe}}
+
+
+				<!--<dl>-->
+					<!--<dt>商品详情：</dt>-->
+					<!--<dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>-->
+				<!--</dl>-->
 			</div>
 
 		</div>

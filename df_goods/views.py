@@ -62,7 +62,7 @@ def list(request,tid,index,sort):
         #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
 
     # 创建Paginator对象,每页显示10个
-    paginator = Paginator(goods_list, 1)
+    paginator = Paginator(goods_list, 10)
     # 获取page对象,显示第index页的数据
     pages = paginator.page(int(index))
     print pages.number
@@ -79,11 +79,29 @@ def list(request,tid,index,sort):
 def detail(request,tid):
     # 通过商品id找到商品对象
     goodinfo = GoodsInfo.objects.get(pk=tid)
+    # 获取分类两件新品
+    news = goodinfo.gtype.goodsinfo_set.order_by('-id')[0:2]
+    # 加点击量
+    goodinfo.gclick = goodinfo.gclick+1
+    goodinfo.save()
 
+    print news
 
 
 
     context = {'title':'天天生鲜商品详情',
-               'goodinfo':goodinfo
+               'goodinfo':goodinfo,
+               'news':news
                }
     return render(request,'df_goods/detail.html',context)
+
+# 自定义搜索视图类
+from haystack.views import SearchView
+class MySearchView(SearchView):
+    def extra_context(self):
+        extra = super(MySearchView, self).extra_context()
+
+        # title为网页标题部分显示的文字变量名,其他的都是固定值
+        extra['title']=self.request.GET.get('q')
+
+        return extra
