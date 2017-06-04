@@ -76,4 +76,5 @@ def list(request,tid,index,sort):
     return render(request,'df_goods/list.html',context)
 
 def detail(request):
-    pass
+    context = {'title':'天天生鲜商品详情'}
+    return render(request,'df_goods/detail.html',context)
