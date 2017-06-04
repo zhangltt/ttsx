@@ -43,7 +43,7 @@ def index2(request,tid):
 
 def list(request,tid,index,sort):
     # 获取tid获取分类
-    print sort
+
     typeinfo = TypeInfo.objects.get(pk=int(tid))
     #print typeinfo
     # 获取最新推荐的两件商品,通过id降序
@@ -62,10 +62,11 @@ def list(request,tid,index,sort):
         #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
 
     # 创建Paginator对象,每页显示10个
-    paginator = Paginator(goods_list, 10)
+    paginator = Paginator(goods_list, 1)
     # 获取page对象,显示第index页的数据
     pages = paginator.page(int(index))
-    print goods_list[0].gtitle
+    print pages.number
+    #print goods_list[0].gtitle
     #print good1_list[0].gtitle
     context={'pages':pages,'new':news,
              'sort':sort,
@@ -75,6 +76,14 @@ def list(request,tid,index,sort):
     #return JsonResponse(context)
     return render(request,'df_goods/list.html',context)
 
-def detail(request):
-    context = {'title':'天天生鲜商品详情'}
+def detail(request,tid):
+    # 通过商品id找到商品对象
+    goodinfo = GoodsInfo.objects.get(pk=tid)
+
+
+
+
+    context = {'title':'天天生鲜商品详情',
+               'goodinfo':goodinfo
+               }
     return render(request,'df_goods/detail.html',context)

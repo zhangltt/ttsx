@@ -5,5 +5,5 @@ urlpatterns=[
     url('^$',views.index),
     url('^index2(\d+)/$',views.index2),
     url('^list(\d+)_(\d+)_(\d+)/$',views.list),
-    url('^detail/$',views.detail),
+    url('^detail(\d+)/$',views.detail),
 ]

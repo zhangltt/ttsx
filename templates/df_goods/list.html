@@ -83,10 +83,12 @@
 			</ul>
 
 			<div class="pagenation">
+				<a href="/list{{typeinfo.id}}_1_1">首页</a>
 				{%if pages.has_previous%}
-				<a href="/list{{pages.paginator}}_{{pages.previous_page_number_sort}}"><上一页</a>
+				<a href="/list{{typeinfo.id}}_{{pages.previous_page_number}}_{{sort}}"><上一页</a>
 				{%endif%}
 
+				{%if pages.paginator.num_pages <= 5%}
 				{%for nums in paginator.page_range%}
 				{%if nums == pages.number%}
 				<a href="#" class="active">{{nums}}</a>
@@ -94,11 +96,64 @@
 				<a href="/list{{typeinfo.id}}_{{nums}}_{{sort}}">{{nums}}</a>
 				{%endif%}
 				{%endfor%}
+				{%endif%}
+
+				{%if pages.paginator.num_pages > 5%}
+
+					{%if pages.number == 1%}
+					<a href="#" class="active">1</a>
+					<a href="/list{{typeinfo.id}}_{{pages.number|add:1}}_{{sort}}">2</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:2}}_{{sort}}">3</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:3}}_{{sort}}">4</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:4}}_{{sort}}">5</a>
+
+
+
+					{%elif pages.number == 2%}
+					<a href="/list{{typeinfo.id}}_{{pages.number|add:-1}}_{{sort}}">1</a>
+					<a href="#" class="active">2</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:1}}_{{sort}}">3</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:2}}_{{sort}}">4</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:3}}_{{sort}}">5</a>
+
+
+					{%elif pages.number == pages.number|add:-1%}
+
+					<a href="/list{{typeinfo.id}}_{{pages.number|add:-3}}_{{sort}}">{{pages.number|add:-3}}</a>
+					<a href="/list{{typeinfo.id}}_{{pages.number|add:-2}}_{{sort}}">{{pages.number|add:-2}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-1}}_{{sort}}">{{pages.number|add:-1}}</a>
+					<a href="#" class="active">{{pages.number}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:1}}_{{sort}}">{{pages.number|add:1}}</a>
+
+
+					{%elif pages.number == pages.number%}
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-4}}_{{sort}}">{{pages.number|add:-4}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-3}}_{{sort}}">{{pages.number|add:-3}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-2}}_{{sort}}">{{pages.number|add:-2}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-1}}_{{sort}}">{{pages.number|add:-1}}</a>
+                    <a href="#" class="active">{{pages.number}}</a>
+					{%else%}
+
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-2}}_{{sort}}">{{pages.number|add:-2}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:-1}}_{{sort}}">{{pages.number|add:-1}}</a>
+					<a href="#" class="active">{{pages.number}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:1}}_{{sort}}">{{pages.number|add:1}}</a>
+                    <a href="/list{{typeinfo.id}}_{{pages.number|add:2}}_{{sort}}">{{pages.number|add:2}}</a>
+
+
+
+
+					{%endif%}
+
+
+				{%endif%}
 
 				{%if pages.has_next%}
 				<a href="/list{{typeinfo.id}}_{{pages.next_page_number}}_{{sort}}">下一页></a>
-
+				<a href="/list{{typeinfo.id}}_{{pages.paginator.num_pages}}_{{sort}}">末页</a>
 				{%endif%}
+
+
 			</div>
 		</div>
 	</div>
