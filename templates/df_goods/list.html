@@ -126,7 +126,7 @@
                     <a href="/list{{typeinfo.id}}_{{pages.number|add:1}}_{{sort}}">{{pages.number|add:1}}</a>
 
 
-					{%elif pages.number == pages.number%}
+					{%elif pages.number == pages.paginator.num_pages%}
                     <a href="/list{{typeinfo.id}}_{{pages.number|add:-4}}_{{sort}}">{{pages.number|add:-4}}</a>
                     <a href="/list{{typeinfo.id}}_{{pages.number|add:-3}}_{{sort}}">{{pages.number|add:-3}}</a>
                     <a href="/list{{typeinfo.id}}_{{pages.number|add:-2}}_{{sort}}">{{pages.number|add:-2}}</a>

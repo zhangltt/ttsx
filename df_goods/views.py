@@ -62,7 +62,7 @@ def list(request,tid,index,sort):
         #goods_list = GoodsInfo.objects.filter(gtype_id=int(tid)).order_by('-gclick')
 
     # 创建Paginator对象,每页显示10个
-    paginator = Paginator(goods_list, 10)
+    paginator = Paginator(goods_list, 2)
     # 获取page对象,显示第index页的数据
     pages = paginator.page(int(index))
     print pages.number
