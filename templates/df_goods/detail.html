@@ -35,7 +35,24 @@ $(function(){
 
 })
 
+$(function(){
+    $('#add_cart').click(function(){
+
+       $.get('/cart/add{{goodinfo.id}}_'+$('.num_show').val()+'/',function(data){
+           alert(data.a)
+
+
+	   }) ;
+
+	})
+
+
+})
+
+
 </script>
+
+
 
 
 {%endblock head%}
@@ -149,6 +166,10 @@ $(function(){
 
 		</div>
 	</div>
+
+
+
+
 
 
 {%endblock content%}
