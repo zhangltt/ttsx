@@ -74,6 +74,7 @@ def list(request,tid,index,sort):
              'typeinfo':typeinfo,
              }
     #return JsonResponse(context)
+
     return render(request,'df_goods/list.html',context)
 
 def detail(request,tid):
@@ -84,16 +85,28 @@ def detail(request,tid):
     # 加点击量
     goodinfo.gclick = goodinfo.gclick+1
     goodinfo.save()
-
-    print news
-
-
-
     context = {'title':'天天生鲜商品详情',
                'goodinfo':goodinfo,
                'news':news
                }
-    return render(request,'df_goods/detail.html',context)
+    # 跳转到详情页并获得response对象
+    response =  render(request,'df_goods/detail.html',context)
+    # 查询浏览器中的cookie,值保存的格式'1,2,3,4,5'
+    result = request.COOKIES.get('liulan','')
+    # 判断是否有liulan这个key对应的值,有就添加,没有就写入
+    if result == '':
+        response.set_cookie('liulan',tid)
+    else:
+        liulan_list = result.split(',')
+        # 判断点击的商品id是否已经存在,存在就删除在第一个位置插入新值,否则直接插入
+        if tid in liulan_list:
+            liulan_list.remove(tid)
+        liulan_list.insert(0,tid)
+        if len(liulan_list)>5:
+            liulan_list.pop()
+        tids = ','.join(liulan_list)
+        response.set_cookie('liulan',tids)
+    return response
 
 # 自定义搜索视图类
 from haystack.views import SearchView

@@ -95,11 +95,25 @@ def info(request):
         for goods_id in goods_ids1:
             goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
 
+
+    # 获取cookie里面浏览记录的字符串
+    result = request.COOKIES.get('liulan','')
+    goods_list = []
+    if result == '':
+        goods_list = []
+    else:
+        liulan_list = result.split(',')
+        for i in liulan_list:
+            goods_list.append(GoodsInfo.objects.get(pk=int(i)))
+
+
     context={'title':'用户中心',
              'user_email':user_email,
              'user_name':request.session['user_name'],
              'page_name':1,
-             'goods_list':goods_list}
+             'goods_list':goods_list,
+             'liulan_list':goods_list,
+             }
     return render(request,'df_user/user_center_info.html',context)
 
 @user_decorator.login
