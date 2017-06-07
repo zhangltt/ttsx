@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'df_user.UrlMiddleware.url',
 )
 
 ROOT_URLCONF = 'python4.urls'
