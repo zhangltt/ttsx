@@ -139,6 +139,9 @@ $(function(){
 
 });
 
+
+
+
 </script>
 
 {%endblock head%}
@@ -156,10 +159,13 @@ $(function(){
 		<li class="col06">操作</li>
 	</ul>
 
+	<form method="post" action="/cart/place/">
+		{%csrf_token%}
 	{%for cart in goodscart%}
+
 	<ul class="cart_list_td clearfix" id="{{cart.id}}" >
 
-		<li class="col01"><input type="checkbox" name="" checked="checked"></li>
+		<li class="col01"><input type="checkbox" name="cartid" value="{{cart.id}}" checked="checked"></li>
 		<li class="col02"><img src="/static/{{cart.goods.gpic}}"></li>
 		<li class="col03"><span>{{cart.goods.gtitle}}</span><br>库存:<em>{{cart.goods.gkucun}}</em></li>
 		<li class="col04">{{cart.goods.gunit}}</li>
@@ -168,7 +174,8 @@ $(function(){
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl">+</a>
-				<input type="text" class="num_show fl" value="{{cart.count}}">
+				<input type="text" class="num_show fl" value="{{cart.count}}" name="cart">
+
 				<a href="javascript:;" class="minus fl">-</a>
 			</div>
 		</li>
@@ -184,7 +191,7 @@ $(function(){
 		<li class="col01"><input type="checkbox" name="" checked="checked" id="check_all"></li>
 		<li class="col02">全选</li>
 		<li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b></b>件商品</li>
-		<li class="col04"><a href="place_order.html">去结算</a></li>
+		<li class="col04"><input type="submit" value="去结算"  ></li>
 	</ul>
-
+		</form>
 	{%endblock content%}

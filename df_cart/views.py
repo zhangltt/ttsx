@@ -1,4 +1,10 @@
 #coding=utf8
+import sys
+default_encoding = 'utf-8'
+if sys.getdefaultencoding() != default_encoding:
+    reload(sys)
+    sys.setdefaultencoding(default_encoding)
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from df_user.user_decorator import *
@@ -16,6 +22,7 @@ def cart(request):
 
     context = {'page_name':1,
                'title':'购物车',
+               'name':'购物车',
                'goodscart':goodscart,
                }
     return render(request,'df_cart/cart.html',context)
@@ -82,25 +89,6 @@ def add(request,gid,count):
         #判断如果是ajax请求返回JsonResponse对象 key为数量(购物车上的数字)
         print carts,1
 
-    # else:
-    #     carts = CartInfo.objects.filter(goods__gtitle=title).filter(user_id=request.session['user_id'])
-    #     print carts,22
-    #     # 判断返回列表的长度如果为0创建一个模型类的对象添加商品id 用户名 数量
-    #     if len(carts) == 0:
-    #
-    #         cart = CartInfo()
-    #         cart.count = int(count)
-    #         cart.user_id = request.session['user_id']
-    #         cart.goods_id = int(gid)
-    #         # print 11111
-    #         cart.save()
-    #     # 如果不为0 取出列表中的模型类对象增加商品的数量
-    #     else:
-    #         cart = carts[0]
-    #         cart.count += int(count)
-    #         cart.save()
-    #     # 判断如果是ajax请求返回JsonResponse对象 key为数量(购物车上的数字)
-    #     print carts, 1
 
 
     if request.is_ajax():
@@ -112,8 +100,40 @@ def delete(request):
     cart = CartInfo.objects.get(id=int(id))
     cart.delete()
     return JsonResponse({'result': 'ok'})
-    # 否则返回购物车列表页(点击我的购物车部分)
+
+@login
+def place(request):
+    # 获取用户地址
+    user = UserInfo.objects.filter(pk=request.session['user_id'])
+    print user
+    if len(user)>0:
+        print '----'
+        addres = user[0].uaddress
+        youbian = user[0].uyoubian
+        phone = user[0].uphone
+        name = user[0].uname
+        usersrt = '%s 邮编%s 姓名:%s 联系方式:%s'%(addres,youbian,name,phone)
+        print usersrt
+    result = request.POST
+    cartids = result.getlist('cartid')
+    print cartids,'cartid'
+    cart_list = []
+    for i in cartids:
+        cart = CartInfo.objects.filter(pk=i)
+        cart_list.append(cart[0])
+    print cart_list
+    print cart
+
+    # 获取提交商品
 
 
 
-        #return JsonResponse({'a':1})
+
+    context = {'page_name': 1,
+               'title': '提交订单',
+               'name':'提交订单',
+                'addr':usersrt,
+               'cartids':cart_list,
+               }
+
+    return render(request,'df_cart/placeOrder.html',context)

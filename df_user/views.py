@@ -113,6 +113,7 @@ def info(request):
              'page_name':1,
              'goods_list':goods_list,
              'liulan_list':goods_list,
+             'name':'用户中心',
              }
     return render(request,'df_user/user_center_info.html',context)
 
@@ -127,7 +128,8 @@ def order(request,pindex):
     context={'title':'用户中心',
              'page_name':1,
              'paginator':paginator,
-             'page':page,}
+             'page':page,
+             'name':'用户中心'}
     return render(request,'df_user/user_center_order.html',context)
 
 @user_decorator.login
@@ -141,5 +143,6 @@ def site(request):
         user.uphone=post.get('uphone')
         user.save()
     context={'title':'用户中心','user':user,
-             'page_name':1}
+             'page_name':1,
+             'name':'用户中心'}
     return render(request,'df_user/user_center_site.html',context)
